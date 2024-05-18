@@ -1,0 +1,73 @@
+[gd_scene load_steps=8 format=3 uid="uid://c5mhslk1bhk03"]
+
+[ext_resource type="Texture2D" uid="uid://c4j47g0fd6fmm" path="res://assets/basic-sprites/red16x16.png" id="1_7xtc7"]
+[ext_resource type="Script" path="res://scripts/fireball.gd" id="1_oua02"]
+[ext_resource type="Script" path="res://scripts/fireball_explosion_area.gd" id="3_m3405"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g2pt7"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ek42i"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 5.0
+radial_velocity_min = 100.0
+radial_velocity_max = 500.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -100.0
+radial_accel_max = -100.0
+scale_min = 0.1
+scale_max = 0.6
+turbulence_enabled = true
+turbulence_noise_strength = 5.0
+turbulence_noise_speed_random = 1.0
+turbulence_influence_max = 0.2
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_m3hxu"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 5.0
+radial_velocity_max = 10.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = 10.0
+radial_accel_max = 100.0
+scale_min = 0.1
+scale_max = 0.6
+turbulence_enabled = true
+turbulence_noise_strength = 5.0
+turbulence_noise_speed_random = 2.0
+turbulence_influence_max = 0.5
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nhfrl"]
+radius = 70.0
+
+[node name="Fireball" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_oua02")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_g2pt7")
+
+[node name="ExplosionParticleEffect" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 32
+process_material = SubResource("ParticleProcessMaterial_ek42i")
+texture = ExtResource("1_7xtc7")
+lifetime = 0.3
+one_shot = true
+
+[node name="BaseParticleEffect" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 16
+process_material = SubResource("ParticleProcessMaterial_m3hxu")
+texture = ExtResource("1_7xtc7")
+
+[node name="ExplosionArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("3_m3405")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExplosionArea"]
+shape = SubResource("CircleShape2D_nhfrl")
