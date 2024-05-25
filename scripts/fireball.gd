@@ -5,8 +5,9 @@ extends CharacterBody2D
 @onready var ExplosionParticleEffect := $ExplosionParticleEffect
 @onready var ExplosionArea := $ExplosionArea
 
-@export var BASE_VELOCITY := 100.0
+@export var BASE_VELOCITY := 50.0
 @export var DECAY_TIME := 3.0
+@export var BASE_DAMAGE := 2.0
 
 var direction: Vector2
 var decay_timer := DECAY_TIME
@@ -44,3 +45,6 @@ func kill() -> void:
 	BaseParticleEffect.emitting = false
 	ExplosionParticleEffect.emitting = true
 	ExplosionArea.activate()
+
+func get_base_damage():
+	return BASE_DAMAGE

@@ -1,0 +1,98 @@
+[gd_scene load_steps=11 format=3 uid="uid://befratrxwpi5f"]
+
+[ext_resource type="Script" path="res://scripts/rottenGuard.gd" id="1_3w3mi"]
+[ext_resource type="Texture2D" uid="uid://bxdgkw1qfgskw" path="res://assets/basic-sprites/enemy.png" id="2_j3a42"]
+[ext_resource type="Script" path="res://scripts/playerLungeZone.gd" id="3_2e2ja"]
+[ext_resource type="Script" path="res://scripts/playerDetectionZone.gd" id="3_w8wpt"]
+[ext_resource type="Script" path="res://scripts/wanderController.gd" id="4_7v1b7"]
+[ext_resource type="Script" path="res://scripts/enemy_hitbox.gd" id="5_wmkjn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_038o8"]
+size = Vector2(30, 30)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g70jy"]
+radius = 200.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a4pdh"]
+radius = 400.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_prkf3"]
+size = Vector2(30, 30)
+
+[node name="RottenGuard" type="CharacterBody2D"]
+collision_layer = 8
+script = ExtResource("1_3w3mi")
+MAX_VELOCITY = null
+MIN_VELOCITY = null
+ACCELERATION = null
+STANDARD_FRICTION = null
+MAX_HEALTH = null
+STUN_DELAY = null
+BASE_KNOCKBACK = null
+LUNGE_VELOCITY = null
+LUNGE_DELAY = null
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_j3a42")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_038o8")
+
+[node name="PlayerLungeZone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_2e2ja")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerLungeZone"]
+shape = SubResource("CircleShape2D_g70jy")
+
+[node name="PlayerLungeCycle" type="Timer" parent="PlayerLungeZone"]
+one_shot = true
+autostart = true
+
+[node name="PlayerDetectionZone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 6
+script = ExtResource("3_w8wpt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetectionZone"]
+shape = SubResource("CircleShape2D_a4pdh")
+
+[node name="PlayerDetectionCycle" type="Timer" parent="PlayerDetectionZone"]
+one_shot = true
+autostart = true
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="WanderController" type="Node2D" parent="."]
+script = ExtResource("4_7v1b7")
+
+[node name="Timer" type="Timer" parent="WanderController"]
+wait_time = 2.5
+one_shot = true
+autostart = true
+
+[node name="EnemyHitbox" type="Area2D" parent="." node_paths=PackedStringArray("ParentEnemy")]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("5_wmkjn")
+ParentEnemy = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyHitbox"]
+shape = SubResource("RectangleShape2D_prkf3")
+
+[node name="Timer" type="Timer" parent="EnemyHitbox"]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="body_entered" from="PlayerLungeZone" to="PlayerLungeZone" method="_on_body_entered"]
+[connection signal="body_exited" from="PlayerLungeZone" to="PlayerLungeZone" method="_on_body_exited"]
+[connection signal="timeout" from="PlayerLungeZone/PlayerLungeCycle" to="." method="_on_player_lunge_cycle_timeout"]
+[connection signal="body_entered" from="PlayerDetectionZone" to="PlayerDetectionZone" method="_on_body_entered"]
+[connection signal="body_exited" from="PlayerDetectionZone" to="PlayerDetectionZone" method="_on_body_exited"]
+[connection signal="timeout" from="PlayerDetectionZone/PlayerDetectionCycle" to="." method="_on_player_detection_cycle_timeout"]
+[connection signal="timeout" from="WanderController/Timer" to="WanderController" method="_on_timer_timeout"]
+[connection signal="area_entered" from="EnemyHitbox" to="EnemyHitbox" method="_on_area_entered"]
+[connection signal="area_exited" from="EnemyHitbox" to="EnemyHitbox" method="_on_area_exited"]

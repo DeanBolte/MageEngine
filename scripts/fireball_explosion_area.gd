@@ -1,8 +1,9 @@
 extends Area2D
 
+@onready var CollisionShape: CollisionShape2D = $CollisionShape2D
 func _ready() -> void:
-	monitorable = false
-
+	CollisionShape.disabled = true
 
 func activate() -> void:
-	monitorable = true
+	print("actvated")
+	CollisionShape.disabled = false

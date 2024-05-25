@@ -50,7 +50,7 @@ func _physics_process(delta: float) -> void:
 	# apply movement
 	move_and_slide()
 
-func _spells(delta: float):
+func _spells(_delta: float):
 	# priamry spell active
 	var primary_spell_input = Input.is_action_pressed("spell_primary")
 
