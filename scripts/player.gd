@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@onready var Hurtbox := $Hurtbox
+@onready var Hurtbox := $PlayerHurtbox
 @onready var DodgeAnimation := $DodgeAnimation
 
 @onready var FireSpell := $FireSpellHitBox
@@ -31,9 +31,10 @@ var _primary_spell
 func _ready() -> void:
 	_primary_spell = FireSpell
 
+	# signals
+	GameEvents.no_health.connect(_death)
+
 func _physics_process(delta: float) -> void:
-
-
 	if Input.is_action_just_pressed("move_dodge") && _dodge_cooldown <= 0:
 		state = DODGE
 	elif _dodge_cooldown > 0:
@@ -85,3 +86,6 @@ func _dodge(delta):
 func _dodge_ended():
 	state = MOVE
 	_dodge_cooldown = DODGE_COOLDOWN
+
+func _death():
+	SceneHandler.reload_sample_scene()

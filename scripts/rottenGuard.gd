@@ -5,6 +5,9 @@ extends CharacterBody2D
 @onready var Agent: NavigationAgent2D = $NavigationAgent2D
 @onready var WanderController = $WanderController
 @onready var LungeTimer: Timer = $PlayerLungeZone/LungeTimer
+@onready var DamageNumberSpawner: Control = $CanvasLayer/DamageNumberSpawner
+
+@onready var damage_number_2d_template = preload("res://scenes/ui/damage_number_2d.tscn")
 
 @export var MAX_VELOCITY := 100.0
 @export var MIN_VELOCITY := 20.0
@@ -35,6 +38,8 @@ var state = States.IDLE
 var stunned_timer: float = 0.0
 var health = MAX_HEALTH
 var _is_taking_damage: bool = false
+
+var damage_number_2d_pool: Array[DamageNumber2D] = []
 
 func _physics_process(delta: float) -> void:
 	if health <= 0:
@@ -146,13 +151,34 @@ func _death() -> void:
 	# delete enemy instance
 	queue_free()
 
+func _get_damage_number() -> DamageNumber2D:
+	if !damage_number_2d_pool.is_empty():
+		return damage_number_2d_pool.pop_front()
+
+	var new_damage_number = damage_number_2d_template.instantiate()
+	new_damage_number.tree_exiting.connect(
+		func(): damage_number_2d_pool.append(new_damage_number)
+	)
+	return new_damage_number
+
+func _spawn_damage_number(value: float) -> void:
+	var damage_number = _get_damage_number()
+	var val = str(round(value))
+	var pos = global_position
+	var height = 50
+	var spread = 50
+	add_child(damage_number, true)
+	damage_number.set_values_and_animate(val, pos, height, spread)
+
 
 func lunge_at() -> void:
 	state = States.LUNGING
 
 func take_hit(damage: float, direction: Vector2) -> void:
 	health -= damage
+	_spawn_damage_number(damage)
 	velocity += direction.normalized() * BASE_KNOCKBACK
 	stunned_timer = STUN_DELAY
 	state = States.STUNNED
+
 

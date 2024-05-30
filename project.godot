@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameEvents="*res://scripts/game_events.gd"
+PlayerStats="*res://scripts/player_stats.gd"
+SceneHandler="*res://scripts/scene_handler.gd"
 
 [display]
 

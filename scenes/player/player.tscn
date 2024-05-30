@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://bjbkrix2lqjmj"]
+[gd_scene load_steps=14 format=3 uid="uid://bjbkrix2lqjmj"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_cuf32"]
 [ext_resource type="Texture2D" uid="uid://bfs1un3eutsdy" path="res://assets/basic-sprites/player.png" id="2_8f23m"]
 [ext_resource type="Script" path="res://scripts/hurtbox.gd" id="3_ro0p7"]
 [ext_resource type="Script" path="res://scripts/fireSpellHitBox.gd" id="4_18nh2"]
 [ext_resource type="Texture2D" uid="uid://c4j47g0fd6fmm" path="res://assets/basic-sprites/red16x16.png" id="5_coy2q"]
+[ext_resource type="PackedScene" uid="uid://bi1lfv2ye8si1" path="res://scenes/ui/player_ui.tscn" id="6_aap6b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vg5yg"]
 size = Vector2(30, 30)
@@ -62,7 +63,6 @@ scale_max = 0.8
 turbulence_enabled = true
 
 [node name="Player" type="CharacterBody2D"]
-position = Vector2(408, 246)
 collision_layer = 2
 script = ExtResource("1_cuf32")
 
@@ -74,15 +74,16 @@ texture = ExtResource("2_8f23m")
 visible = false
 shape = SubResource("RectangleShape2D_vg5yg")
 
-[node name="Hurtbox" type="Area2D" parent="."]
+[node name="PlayerHurtbox" type="Area2D" parent="." node_paths=PackedStringArray("Player")]
 collision_layer = 0
-collision_mask = 272
+collision_mask = 16
 script = ExtResource("3_ro0p7")
+Player = NodePath("..")
 
-[node name="Timer" type="Timer" parent="Hurtbox"]
+[node name="Timer" type="Timer" parent="PlayerHurtbox"]
+one_shot = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-visible = false
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerHurtbox"]
 shape = SubResource("RectangleShape2D_h8ucn")
 
 [node name="DodgeAnimation" type="AnimationPlayer" parent="."]
@@ -112,3 +113,12 @@ amount = 16
 process_material = SubResource("ParticleProcessMaterial_y1aww")
 texture = ExtResource("5_coy2q")
 lifetime = 0.4
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="PlayerUI" parent="CanvasLayer" instance=ExtResource("6_aap6b")]
+mouse_filter = 2
+
+[connection signal="area_entered" from="PlayerHurtbox" to="PlayerHurtbox" method="_on_area_entered"]
+[connection signal="area_exited" from="PlayerHurtbox" to="PlayerHurtbox" method="_on_area_exited"]
