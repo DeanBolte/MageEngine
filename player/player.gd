@@ -1,9 +1,8 @@
+class_name Player
 extends CharacterBody2D
 
 @onready var Hurtbox := $PlayerHurtbox
 @onready var DodgeAnimation := $DodgeAnimation
-
-@onready var FireSpell := $FireSpellHitBox
 
 @export var MAX_VELOCITY := 600.0
 @export var SPELL_MAX_VELOCITY := 300.0
@@ -26,11 +25,7 @@ var _aiming_normal_vector := Vector2.ZERO
 
 var _dodge_cooldown = 0
 
-var _primary_spell
-
 func _ready() -> void:
-	_primary_spell = FireSpell
-
 	# signals
 	GameEvents.no_health.connect(_death)
 
@@ -46,21 +41,8 @@ func _physics_process(delta: float) -> void:
 		DODGE:
 			_dodge(delta)
 
-	_spells(delta)
-
 	# apply movement
 	move_and_slide()
-
-func _spells(_delta: float):
-	# priamry spell active
-	var primary_spell_input = Input.is_action_pressed("spell_primary")
-
-	if primary_spell_input and !_primary_spell.is_spell_active():
-		_primary_spell.set_spell_active(true)
-		_current_max_velocity = SPELL_MAX_VELOCITY
-	if !primary_spell_input and _primary_spell.is_spell_active():
-		_primary_spell.set_spell_active(false)
-		_current_max_velocity = MAX_VELOCITY
 
 func _move(delta: float):
 	# inputs
@@ -89,3 +71,7 @@ func _dodge_ended():
 
 func _death():
 	SceneHandler.reload_sample_scene()
+
+
+func set_max_velocity(value: float):
+	_current_max_velocity = value

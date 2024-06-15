@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://c5mhslk1bhk03"]
 
-[ext_resource type="Texture2D" uid="uid://c4j47g0fd6fmm" path="res://assets/basic-sprites/red16x16.png" id="1_7xtc7"]
-[ext_resource type="Script" path="res://scripts/fireball.gd" id="1_oua02"]
-[ext_resource type="Script" path="res://scripts/fireball_explosion_area.gd" id="3_m3405"]
+[ext_resource type="Script" path="res://player/spells/fireball/fireball_spell.gd" id="1_x2ude"]
+[ext_resource type="Texture2D" uid="uid://c4j47g0fd6fmm" path="res://assets/basic-sprites/red16x16.png" id="2_hr1vw"]
+[ext_resource type="Script" path="res://player/spells/fireball_explosion_area.gd" id="3_jj246"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g2pt7"]
 
@@ -40,10 +40,10 @@ turbulence_influence_max = 0.5
 [sub_resource type="CircleShape2D" id="CircleShape2D_nhfrl"]
 radius = 120.0
 
-[node name="Fireball" type="CharacterBody2D"]
+[node name="FireballSpell" type="CharacterBody2D"]
 collision_layer = 0
 collision_mask = 24
-script = ExtResource("1_oua02")
+script = ExtResource("1_x2ude")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_g2pt7")
@@ -52,7 +52,7 @@ shape = SubResource("CircleShape2D_g2pt7")
 emitting = false
 amount = 32
 process_material = SubResource("ParticleProcessMaterial_ek42i")
-texture = ExtResource("1_7xtc7")
+texture = ExtResource("2_hr1vw")
 lifetime = 0.3
 one_shot = true
 
@@ -60,13 +60,13 @@ one_shot = true
 emitting = false
 amount = 16
 process_material = SubResource("ParticleProcessMaterial_m3hxu")
-texture = ExtResource("1_7xtc7")
+texture = ExtResource("2_hr1vw")
 
 [node name="ExplosionArea" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 0
 monitoring = false
-script = ExtResource("3_m3405")
+script = ExtResource("3_jj246")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExplosionArea"]
 shape = SubResource("CircleShape2D_nhfrl")

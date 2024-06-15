@@ -1,0 +1,72 @@
+[gd_scene load_steps=9 format=3 uid="uid://bjbkrix2lqjmj"]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1_4sto3"]
+[ext_resource type="Texture2D" uid="uid://bfs1un3eutsdy" path="res://assets/basic-sprites/player.png" id="2_gtbs4"]
+[ext_resource type="Script" path="res://player/hurtbox.gd" id="3_3gmay"]
+[ext_resource type="PackedScene" uid="uid://bi1lfv2ye8si1" path="res://ui/player_ui.tscn" id="4_pni5p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vg5yg"]
+size = Vector2(30, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h8ucn"]
+size = Vector2(28, 28)
+
+[sub_resource type="Animation" id="Animation_igdxd"]
+resource_name = "dodge"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_dodge_ended"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rh6l8"]
+_data = {
+"dodge": SubResource("Animation_igdxd")
+}
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_4sto3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_gtbs4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("RectangleShape2D_vg5yg")
+
+[node name="PlayerHurtbox" type="Area2D" parent="." node_paths=PackedStringArray("Player")]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("3_3gmay")
+Player = NodePath("..")
+
+[node name="Timer" type="Timer" parent="PlayerHurtbox"]
+one_shot = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerHurtbox"]
+shape = SubResource("RectangleShape2D_h8ucn")
+
+[node name="DodgeAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_rh6l8")
+}
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="PlayerUI" parent="CanvasLayer" instance=ExtResource("4_pni5p")]
+mouse_filter = 2
+
+[connection signal="area_entered" from="PlayerHurtbox" to="PlayerHurtbox" method="_on_area_entered"]
+[connection signal="area_exited" from="PlayerHurtbox" to="PlayerHurtbox" method="_on_area_exited"]

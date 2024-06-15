@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://50216457hqdp"]
+
+[ext_resource type="Script" path="res://player/spells/fireball/fireball_book.gd" id="1_uvymd"]
+[ext_resource type="Texture2D" uid="uid://c4j47g0fd6fmm" path="res://assets/basic-sprites/red16x16.png" id="2_g4rry"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40y6f"]
+size = Vector2(100, 160)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pxxqh"]
+particle_flag_disable_z = true
+radial_velocity_min = 30.0
+radial_velocity_max = 40.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_max = 0.5
+turbulence_enabled = true
+turbulence_noise_strength = 5.0
+turbulence_noise_speed_random = 0.6
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s80ib"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 20.0
+direction = Vector3(0, -1, 0)
+spread = 20.0
+initial_velocity_min = 300.0
+initial_velocity_max = 300.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_max = 0.8
+turbulence_enabled = true
+
+[node name="FireBallBook" type="Node2D"]
+script = ExtResource("1_uvymd")
+
+[node name="FireSpellHitBox" type="Area2D" parent="."]
+position = Vector2(0, -40)
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FireSpellHitBox"]
+shape = SubResource("RectangleShape2D_40y6f")
+
+[node name="BaseParticleEffect" type="GPUParticles2D" parent="."]
+position = Vector2(0, -21)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_pxxqh")
+texture = ExtResource("2_g4rry")
+
+[node name="ActiveParticleEffect" type="GPUParticles2D" parent="."]
+position = Vector2(0, -25)
+emitting = false
+amount = 16
+process_material = SubResource("ParticleProcessMaterial_s80ib")
+texture = ExtResource("2_g4rry")
+lifetime = 0.4

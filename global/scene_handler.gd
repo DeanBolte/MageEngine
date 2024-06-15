@@ -1,6 +1,6 @@
 extends Node
 
-var GameScene := preload("res://scenes/sample.tscn")
+var GameScene := preload("res://levels/sample.tscn")
 
 
 func reload_sample_scene() -> void:

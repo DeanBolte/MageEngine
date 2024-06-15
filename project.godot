@@ -11,15 +11,15 @@ config_version=5
 [application]
 
 config/name="mageengine"
-run/main_scene="res://scenes/sample.tscn"
+run/main_scene="res://levels/sample.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-GameEvents="*res://scripts/game_events.gd"
-PlayerStats="*res://scripts/player_stats.gd"
-SceneHandler="*res://scripts/scene_handler.gd"
+GameEvents="*res://global/game_events.gd"
+PlayerStats="*res://global/player_stats.gd"
+SceneHandler="*res://global/scene_handler.gd"
 
 [display]
 

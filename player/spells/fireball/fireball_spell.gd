@@ -1,5 +1,5 @@
-class_name FireballSpell
-extends CharacterBody2D
+class_name FireBallSpell
+extends Spell
 
 @onready var BaseParticleEffect := $BaseParticleEffect
 @onready var ExplosionParticleEffect := $ExplosionParticleEffect

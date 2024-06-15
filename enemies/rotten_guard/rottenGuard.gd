@@ -7,7 +7,7 @@ extends CharacterBody2D
 @onready var LungeTimer: Timer = $PlayerLungeZone/LungeTimer
 @onready var DamageNumberSpawner: Control = $CanvasLayer/DamageNumberSpawner
 
-@onready var damage_number_2d_template = preload("res://scenes/ui/damage_number_2d.tscn")
+@onready var damage_number_2d_template = preload("res://ui/damage_number_2d.tscn")
 
 @export var MAX_VELOCITY := 100.0
 @export var MIN_VELOCITY := 20.0
@@ -15,8 +15,8 @@ extends CharacterBody2D
 @export var STANDARD_FRICTION := 0.1
 
 @export var MAX_HEALTH = 4
-@export var STUN_DELAY = 0.2
-@export var BASE_KNOCKBACK := 200.0
+@export var STUN_DELAY = 0.1
+@export var BASE_KNOCKBACK := 400.0
 
 @export var LUNGE_VELOCITY := 400.0
 @export var LUNGE_DELAY := 2.0

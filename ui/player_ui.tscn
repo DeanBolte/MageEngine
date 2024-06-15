@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bi1lfv2ye8si1"]
 
-[ext_resource type="Script" path="res://scripts/health_bar.gd" id="1_6678s"]
-[ext_resource type="Script" path="res://scripts/mana_bar.gd" id="2_3opsy"]
+[ext_resource type="Script" path="res://ui/health_bar.gd" id="1_6678s"]
+[ext_resource type="Script" path="res://ui/mana_bar.gd" id="2_3opsy"]
 
 [node name="PlayerUI" type="Control"]
 layout_mode = 3
