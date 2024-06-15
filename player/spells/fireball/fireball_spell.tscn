@@ -70,3 +70,5 @@ script = ExtResource("3_jj246")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExplosionArea"]
 shape = SubResource("CircleShape2D_nhfrl")
+
+[node name="DecayTimer" type="Timer" parent="."]

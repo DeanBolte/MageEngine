@@ -29,8 +29,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if mouse_motion:
 		_aim_direction = (mouse_motion.global_position - player.global_position).normalized()
 
-
-
 func _process(delta: float) -> void:
 	_player_input()
 

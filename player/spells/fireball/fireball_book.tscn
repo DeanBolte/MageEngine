@@ -30,8 +30,9 @@ scale_min = 0.1
 scale_max = 0.8
 turbulence_enabled = true
 
-[node name="FireBallBook" type="Node2D"]
+[node name="FireBallBook" type="Node2D" node_paths=PackedStringArray("cooldownTimer")]
 script = ExtResource("1_uvymd")
+cooldownTimer = NodePath("CooldownTimer")
 
 [node name="FireSpellHitBox" type="Area2D" parent="."]
 position = Vector2(0, -40)
@@ -54,3 +55,7 @@ amount = 16
 process_material = SubResource("ParticleProcessMaterial_s80ib")
 texture = ExtResource("2_g4rry")
 lifetime = 0.4
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
